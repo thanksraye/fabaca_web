@@ -23,4 +23,37 @@ router.get('/data',async (req, res)=>{
     res.send(resData)
 })
 
+
+router.post('/createcar', async (req, res)=>{
+    var key = req.body.key;
+    var maker = req.body.maker
+    var model = req.body.model 
+    var color = req.body.color
+    var owner = req.body.owner
+
+    await blockQuery.createCars(key , maker, model, color , owner)
+    await console.log("Success")
+    await res.send("Sucess input data in BlockCh")
+
+})
+
+router.post('/changeowner', async (req, res)=>{
+    var key = req.body.key;
+    var buyer = req.body.buyer
+    var result = await blockQuery.queryCar(key);
+    console.log(result)
+    if (result == "No Data") {
+        res.send("No Data Key")
+    } else {
+        
+        await blockQuery.changeCars(key , buyer)
+        await console.log("Success")
+        await res.send("Sucess input data in BlockCh")
+    }
+
+    
+
+})
+
+
 module.exports =router;
