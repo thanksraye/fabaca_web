@@ -17,22 +17,23 @@ router.get('/' , async (req, res)=>{
 
 router.get('/data',async (req, res)=>{
     var data = await blockQuery.queryAllData()
-    var resData = await JSON.parse(data)
+    var resDataUser = await JSON.parse(data[0])
+    var resDataReport = await JSON.parse(data[1])
     // await console.log(data)
-    await console.log(resData[0].Key)
-    res.send(resData)
+    await console.log(resDataUser[0].Key)
+    res.send([resDataUser,resDataReport])
 })
 
 
-router.post('/createcar', async (req, res)=>{
-    
+router.post('/createreport', async (req, res)=>{
     var key = req.body.key;
-    var maker = req.body.maker
-    var model = req.body.model 
-    var color = req.body.color
-    var owner = req.body.owner
+    var reportType = req.body.reportType;
+    var user = req.body.user
+    var barcode = req.body.barcode 
+    var contexReport = req.body.contexReport
+    var status = req.body.status
 
-    await blockQuery.createCars(key , maker, model, color , owner)
+    await blockQuery.createReports(key,reportType, user, barcode,contexReport, status)
     await console.log("Success")
     await res.send("Sucess input data in BlockCh")
 
