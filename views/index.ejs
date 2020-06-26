@@ -13,11 +13,10 @@
           <tr>
             <th scope="col">Number</th>
             <th scope="col">KEY</th>
-            <th scope="col">Maker</th>
-            <th scope="col">Color</th>
-            <th scope="col">Doctype</th>
-            <th scope="col">Model</th>
-            <th scope="col">Owner</th>
+            <th scope="col">name</th>
+            <th scope="col">email</th>
+            <th scope="col">docType</th>
+            <th scope="col">phonenum</th>
           </tr>
         </thead>
         <tbody>
@@ -26,11 +25,10 @@
             
             <th scope="row"><%= i+1 %></th>
             <td><%= data[i].Key %></td>
-            <td><%= data[i].Record.make %></td>
-            <td><%= data[i].Record.color %></td>
+            <td><%= data[i].Record.name %></td>
+            <td><%= data[i].Record.email %></td>
             <td><%= data[i].Record.docType %></td>
-            <td><%= data[i].Record.model %></td>
-            <td><%= data[i].Record.owner %></td>
+            <td><%= data[i].Record.phonenum %></td>
           </tr>
           <% } %>
           

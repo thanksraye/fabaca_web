@@ -10,104 +10,151 @@ class FabCar extends Contract {
 
     async initLedger(ctx) {
         console.info('============= START : Initialize Ledger ===========');
-        const cars = [
+        const user = [
             {
-                color: 'blue',
-                make: 'Toyota',
-                model: 'Prius',
-                owner: 'Tomoko',
+                name: 'kim',
+                phonenum: '010-2222-3333',
+                email: '1@naver.com'
             },
             {
-                color: 'red',
-                make: 'Ford',
-                model: 'Mustang',
-                owner: 'Brad',
+                name: 'park',
+                phonenum: '010-3333-3333',
+                email: '2@naver.com'
             },
             {
-                color: 'green',
-                make: 'Hyundai',
-                model: 'Tucson',
-                owner: 'Jin Soo',
+                name: 'song',
+                phonenum: '010-4444-4444',
+                email: '3@naver.com'
             },
             {
-                color: 'yellow',
-                make: 'Volkswagen',
-                model: 'Passat',
-                owner: 'Max',
+                name: 'min',
+                phonenum: '010-223-3333',
+                email: '4@naver.com'
             },
             {
-                color: 'black',
-                make: 'Tesla',
-                model: 'S',
-                owner: 'Adriana',
-            },
-            {
-                color: 'purple',
-                make: 'Peugeot',
-                model: '205',
-                owner: 'Michel',
-            },
-            {
-                color: 'white',
-                make: 'Chery',
-                model: 'S22L',
-                owner: 'Aarav',
-            },
-            {
-                color: 'violet',
-                make: 'Fiat',
-                model: 'Punto',
-                owner: 'Pari',
-            },
-            {
-                color: 'indigo',
-                make: 'Tata',
-                model: 'Nano',
-                owner: 'Valeria',
-            },
-            {
-                color: 'brown',
-                make: 'Holden',
-                model: 'Barina',
-                owner: 'Shotaro',
+                name: 'choi',
+                phonenum: '010-323-3333',
+                email: '5@naver.com'
             },
         ];
 
-        for (let i = 0; i < cars.length; i++) {
-            cars[i].docType = 'car';
-            await ctx.stub.putState('CAR' + i, Buffer.from(JSON.stringify(cars[i])));
-            console.info('Added <--> ', cars[i]);
+        const report = [
+            {
+                reportType: 'book',// 1:book 2:bike
+                user: 'kim',
+                barcode: 'fn3o2o42j3o4j329nr23nfl2',
+                timeStamp:Date.now,
+                contexReport:"Test",
+                status:"reported" // 1:reported 2:validated 3:compansated 4:rejected
+            },
+            {
+                reportType: 'book',// 1:book 2:bike
+                user: 'song',
+                barcode: 'fn3fewfo2o42j3o4j329nr23nfl2',
+                timeStamp:Date.now,
+                contexReport:"Test",
+                status:"reported" // 1:reported 2:validated 3:compansated 4:rejected
+            },
+            {
+                reportType: 'bike',// 1:book 2:bike
+                user: 'kim',
+                barcode: 'fn3o2o42j3o4j3ff29nr23nfl2',
+                timeStamp:Date.now,
+                contexReport:"Test",
+                status:"validated" // 1:reported 2:validated 3:compansated 4:rejected
+            },
+            {
+                reportType: 'bike',// 1:book 2:bike
+                user: 'song',
+                barcode: 'fffn3o2o42j3o4j329nr23nfl2',
+                timeStamp:Date.now,
+                contexReport:"Test",
+                status:"reported" // 1:reported 2:validated 3:compansated 4:rejected
+            },
+        ];
+        for (let i = 0; i < user.length; i++) {
+            user[i].docType = 'user';
+            await ctx.stub.putState('USER' + i, Buffer.from(JSON.stringify(user[i])));
+            console.info('Added <--> ', user[i]);
         }
+
+        for (let i = 0; i < report.length; i++) {
+            report[i].docType = 'report';
+            await ctx.stub.putState('REPORT' + i, Buffer.from(JSON.stringify(report[i])));
+            console.info('Added <--> ', report[i]);
+        } 
         console.info('============= END : Initialize Ledger ===========');
     }
 
-    async queryCar(ctx, carNumber) {
-        const carAsBytes = await ctx.stub.getState(carNumber); // get the car from chaincode state
-        if (!carAsBytes || carAsBytes.length === 0) {
-            throw new Error(`${carNumber} does not exist`);
+    async queryUser(ctx, userName) {
+        const userAsBytes = await ctx.stub.getState(userName); // get the car from chaincode state
+        if (!userAsBytes || userAsBytes.length === 0) {
+            throw new Error(`${userName} does not exist`);
         }
-        console.log(carAsBytes.toString());
-        return carAsBytes.toString();
+        console.log(userAsBytes.toString());
+        return userAsBytes.toString();
     }
 
-    async createCar(ctx, carNumber, make, model, color, owner) {
-        console.info('============= START : Create Car ===========');
+    async queryReport(ctx, reportType) {
+        const reportAsBytes = await ctx.stub.getState(reportType); // get the car from chaincode state
+        if (!reportAsBytes || reportAsBytes.length === 0) {
+            throw new Error(`${reportType} does not exist`);
+        }
+        console.log(userAsBytes.toString());
+        return reportAsBytes.toString();
+    }
+    async createReport(ctx, reportType, user, barcode, timeStamp,contexReport, status ) {
+        console.info('============= START : Create User ===========');
 
-        const car = {
-            color,
-            docType: 'car',
-            make,
-            model,
-            owner,
+        const report = {
+            reportType,
+            user,
+            barcode,
+            timeStamp,
+            contexReport,
+            status
         };
 
-        await ctx.stub.putState(carNumber, Buffer.from(JSON.stringify(car)));
-        console.info('============= END : Create Car ===========');
+        await ctx.stub.putState(reportType, Buffer.from(JSON.stringify(report)));
+        console.info('============= END : Create REPORT ===========');
     }
 
-    async queryAllCars(ctx) {
-        const startKey = 'CAR0';
-        const endKey = 'CAR999';
+
+    async createUser(ctx, userName, name, phonenum, email) {
+        console.info('============= START : Create User ===========');
+
+        const user = {
+            name,
+            docType: 'user',
+            phonenum,
+            email,
+        };
+
+        await ctx.stub.putState(userName, Buffer.from(JSON.stringify(user)));
+        console.info('============= END : Create USER ===========');
+    }
+    async queryAllUsers(ctx) {
+        const startKey = 'USER0';
+        const endKey = 'USER999';
+        const allResults = [];
+        for await (const {key, value} of ctx.stub.getStateByRange(startKey, endKey)) {
+            const strValue = Buffer.from(value).toString('utf8');
+            let record;
+            try {
+                record = JSON.parse(strValue);
+            } catch (err) {
+                console.log(err);
+                record = strValue;
+            }
+            allResults.push({ Key: key, Record: record });
+        }
+        console.info(allResults);
+        return JSON.stringify(allResults);
+    }
+
+    async queryAllReports(ctx) {
+        const startKey = 'REPORT0';
+        const endKey = 'REPORT999';
         const allResults = [];
         for await (const {key, value} of ctx.stub.getStateByRange(startKey, endKey)) {
             const strValue = Buffer.from(value).toString('utf8');

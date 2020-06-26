@@ -111,7 +111,7 @@ const register_user =  async ()=> {
     }
 }
 
-const query_all_car =  async ()=> {
+const query_all_data =  async ()=> {
     try {
         // load the network configuration
         const ccpPath = path.resolve(__dirname , 'test-network', 'organizations', 'peerOrganizations', 'org1.example.com', 'connection-org1.json');
@@ -143,8 +143,8 @@ const query_all_car =  async ()=> {
         // Evaluate the specified transaction.
         // queryCar transaction - requires 1 argument, ex: ('queryCar', 'CAR4')
         // queryAllCars transaction - requires no arguments, ex: ('queryAllCars')
-        const result1 = await contract.evaluateTransaction('queryCar', 'CAR4');
-        const result = await contract.evaluateTransaction('queryAllCars');
+        const result1 = await contract.evaluateTransaction('queryAllReports');
+        const result = await contract.evaluateTransaction('queryAllUsers');
         console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
         console.log(`Transaction has been evaluated, result is: ${result1.toString()}`);
         
@@ -188,7 +188,7 @@ const query_car =  async (key)=> {
         // Evaluate the specified transaction.
         // queryCar transaction - requires 1 argument, ex: ('queryCar', 'CAR4')
         // queryAllCars transaction - requires no arguments, ex: ('queryAllCars')
-        const result1 = await contract.evaluateTransaction('queryCar', key);
+        const result1 = await contract.evaluateTransaction('queryUser', 'key_2');
         // const result = await contract.evaluateTransaction('queryAllCars');
         // console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
         console.log(`Transaction has been evaluated, result is: ${result1.toString()}`);
@@ -230,9 +230,10 @@ const create_cars =  async (key , maker, model, color , owner)=> {
         const contract = network.getContract('fabcar');
 
         // Submit the specified transaction.
+        // createUser(ctx, name, phonenum, email)
         // createCar transaction - requires 5 argument, ex: ('createCar', 'CAR12', 'Honda', 'Accord', 'Black', 'Tom')
         // changeCarOwner transaction - requires 2 args , ex: ('changeCarOwner', 'CAR12', 'Dave')
-        var result = await contract.submitTransaction('createCar', key, maker, model, color, owner);
+        var result = await contract.submitTransaction('createUser', "key_2", "maker_2", "model_2");
         console.log('Transaction has been submitted');
         console.log(result)
         // Disconnect from the gateway.
@@ -272,7 +273,7 @@ async function change_cars(key, buyer) {
 
         // Get the contract from the network.
         const contract = network.getContract('fabcar');
-
+        console.log("fwfew")
         // Submit the specified transaction.
         // createCar transaction - requires 5 argument, ex: ('createCar', 'CAR12', 'Honda', 'Accord', 'Black', 'Tom')
         // changeCarOwner transaction - requires 2 args , ex: ('changeCarOwner', 'CAR12', 'Dave')
@@ -290,13 +291,14 @@ async function change_cars(key, buyer) {
 
 module.exports = {enrollAdmin:enroll_dmin, 
                 registerUser:register_user , 
-                queryAllCar:query_all_car,
+                queryAllData:query_all_data,
                 queryCar : query_car,
                 createCars:create_cars,
                 changeCars:change_cars 
                 }
-// enrollAdmin()
-// registerUser()
-// queryAllCar()
-// createCars() 
+// enroll_dmin()
+// register_user()
+// query_all_data()
+// query_car()
+// create_cars() 
 // changeCars()

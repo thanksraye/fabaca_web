@@ -8,15 +8,15 @@ var fs = require('fs')
 var blockQuery = require('../util')
 
 router.get('/' , async (req, res)=>{
-    var data = await blockQuery.queryAllCar()
+    var data = await blockQuery.queryAllData()
     var resData = await JSON.parse(data)
     // await console.log(data)
-    await console.log(resData[0].Key)
+    await console.log(resData[0])
     res.render('index' , {data:resData})
 })
 
 router.get('/data',async (req, res)=>{
-    var data = await blockQuery.queryAllCar()
+    var data = await blockQuery.queryAllData()
     var resData = await JSON.parse(data)
     // await console.log(data)
     await console.log(resData[0].Key)
@@ -25,6 +25,7 @@ router.get('/data',async (req, res)=>{
 
 
 router.post('/createcar', async (req, res)=>{
+    
     var key = req.body.key;
     var maker = req.body.maker
     var model = req.body.model 
@@ -40,7 +41,7 @@ router.post('/createcar', async (req, res)=>{
 router.post('/changeowner', async (req, res)=>{
     var key = req.body.key;
     var buyer = req.body.buyer
-    var result = await blockQuery.queryCar(key);
+    var result = await blockQuery.query_all_car();
     console.log(result)
     if (result == "No Data") {
         res.send("No Data Key")
@@ -48,12 +49,11 @@ router.post('/changeowner', async (req, res)=>{
         
         await blockQuery.changeCars(key , buyer)
         await console.log("Success")
-        await res.send("Sucess input data in BlockCh")
+        await res.render("Sucess input data in BlockCh")
     }
 
     
 
 })
-
 
 module.exports =router;

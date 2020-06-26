@@ -41,8 +41,8 @@ async function main() {
         // Evaluate the specified transaction.
         // queryCar transaction - requires 1 argument, ex: ('queryCar', 'CAR4')
         // queryAllCars transaction - requires no arguments, ex: ('queryAllCars')
-        const result1 = await contract.evaluateTransaction('queryCar', 'CAR4');
-        const result = await contract.evaluateTransaction('queryAllCars');
+        const result1 = await contract.evaluateTransaction('queryAllUsers');
+        const result = await contract.evaluateTransaction('queryAllReports');
         console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
         console.log(`Transaction has been evaluated, result is: ${result1.toString()}`);
     } catch (error) {
